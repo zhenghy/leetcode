@@ -1,43 +1,50 @@
 
 
-/* 哈希表的C实现
+/*1.哈希表的C实现
   查找使用的方法是“除留余数法”，解决冲突使用的方法是“链地址法”。
+  2. Map 是map, Hash 是hash.不是一回事
+  3. Map 就像python 中的字典。
+  4. Hash 是一种储存技术。
+  5. 第一题目刚好可以用hash技术而已。
+  6. 以下代码无关hash，主要是用C的链表实现python 字典功能
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> //memset
-#define FALSE 0
-#define TRUE 1
-typedef int STATUS;
 
 //定义数据节点
+//NODE：{key,value,next}. next是一个NODE类型的地址.
 typedef struct _NODE
 {
-    int data;
+    int key;
+    int value;
     struct _NODE *next;
 } NODE;
 
 // 定义字典
+// DICT: {很多个NODE的地址}.
 typedef struct _DICT
 {
-    NODE *value[10];
+    NODE *node;
+    int size;
 } DICT;
 
 // 创建字典
-DICT *Create()
+void Create(DICT *dict, int size)
 {
-    DICT *dict = (DICT *)malloc(sizeof(DICT));
-    memset(dict, 0, sizeof(DICT));
-    return dict;
+    dict->node = (NODE *)malloc(sizeof(NODE) * size);
+    memset(dict->node, 0, sizeof(NODE) * size); // 初始化dict
+    dict->size = size;
 }
+
 // 查找函数
-NODE *Get(DICT *dict, int data)
+int Get(DICT *dict, int key)
 {
-    NODE *pNode;
     if (dict == NULL)
         return NULL;
-    pNode = dict->value[data % 10];
+    NODE *pNode;
+    pNode = dict->node;
     while (pNode)
     {
         if (data == pNode->data)
@@ -47,7 +54,7 @@ NODE *Get(DICT *dict, int data)
     return NULL;
 }
 //在哈希表中插入数据
-STATUS *Set(DICT *dict, int data)
+STATUS Set(DICT *dict, int data)
 {
     NODE *pNode;
     // 字典是空，则不能插入?
@@ -66,7 +73,7 @@ STATUS *Set(DICT *dict, int data)
     return TRUE;
 }
 //从哈希表中删除数据
-STATUS *Del(DICT *dict, int data)
+STATUS Del(DICT *dict, int data)
 {
     NODE *pHead;
     NODE *pNode;
@@ -99,6 +106,7 @@ STATUS Show(DICT *dict)
         p = p->next;
     }
     printf("NULL");
+    return TRUE;
 }
 
 int main()
