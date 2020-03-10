@@ -39,40 +39,27 @@
  * 
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
 // @lc code=start
 
-int lengthOfLongestSubstring(char *s)
-{
+
+int lengthOfLongestSubstring(char * s){
+    int map[128]={0};
     int maxlen=0;
-    int start=0;
-    int end=0;
-    int map[128] = {0};
+    int i=0;
+    char tmp;
+    while(s[i]!='\0') {
+        tmp = (int)s[i];
+        if (map[tmp]==0){
+            map[tmp]=1;
+            maxlen ++;
+        }else{
 
-    map[s[start]] = 1;
-    while (s[end] != 0)
-    {
-        maxlen = maxlen > (end - start + 1) ? maxlen : (end - start + 1);
-        end++;
-        while (map[s[end]] != 0) //新字符存在,截断
-        {
-            map[s[start++]] = 0;
         }
-        map[s[end]] = 1;
     }
+    return 3;
 
-    return maxlen;
 }
+
 
 // @lc code=end
 
-int main()
-{
-    int res;
-    char *s = "tmmzuxt";
-    res = lengthOfLongestSubstring(s);
-    printf("%d", res);
-    return 0;
-}
